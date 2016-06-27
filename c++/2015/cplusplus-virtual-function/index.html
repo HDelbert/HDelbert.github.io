@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="theme-color" content="#2ecc71">
+<meta name="google-site-verification" content="5HhLZhC5gJXf5Wqcqf7T1FRLPqI083fi5WVu5LDWnyw" />
+<meta name="baidu-site-verification" content="an8ny05bku" />
+<title> C++虚析构函数 | HDelbert</title>
+<meta name="description" content="c++ virtual 析构函数">
+<meta name="keywords" content="c++, virtual, 析构函数">
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/markdown.css">
+<link rel="stylesheet" href="/css/haroopad.css">
+<link rel="canonical" href="http://www.hdelbert.com/c++/2015/cplusplus-virtual-function/">
+<link rel="alternate" type="application/rss+xml" title="HDelbert" href="http://www.hdelbert.com/feed.xml" />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-71731514-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script>base_url = "";</script>
+  </head>
+  <body class="single">
+    <main class="main-container">
+        <header class="site-header">
+  <div class="container txt-center">
+    <a href="#" class="nav-toogle js-menu-trigger sliding-panel-button">
+      <span></span>
+      <span></span>
+      <span></span>
+    </a>
+    <nav class="js-menu sliding-panel-content">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="http://github.com/HDelbert" target="_blank">Github</a></li>
+        <li><a href="/feed.xml" target="_blank"><i class="icon icon-feed"></i> Feed</a></li>
+      </ul>
+    </nav>
+    <div class="js-menu-screen sliding-panel-fade-screen"></div>
+    <a href="/" class="author-thumb dot">
+      <img src="/images/avatar.jpeg" alt="Author thumbnail" class="dot">
+    </a>
+      <h1 class="post-title">C++虚析构函数</h1>
+      <p class="post-meta">Nov 10, 2015 • HuMeng</p>
+  </div>
+</header>
+        <section class="main-content">
+          <article class="post">
+  <div class="post-content container">
+    <div class="markdown haroopad">
+      <p>为什么C++ 的父类的析构函数需要加<strong>virtual</strong>关键字？</p>
+<p>我们先来看一段实例代码:</p>
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Object</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Object</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Object() called&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">Object</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;~Object() called&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">InheritObject</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Object</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">InheritObject</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;InheritObject() called&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">~</span><span class="n">InheritObject</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;~InheritObject() called&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></div>
+<p>上述代码是一个简单的继承关系，我们下面做一个测试。</p>
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="p">{</span>
+        <span class="n">InheritObject</span> <span class="n">ihtObj</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>编译运行，查看输出结果为：</p>
+<blockquote>
+  <p>Object() called<br />
+InheritObject() called<br />
+~InheritObject() called<br />
+~Object() called</p>
+</blockquote>
+<p>这个很容易理解，内存使用的常用方法，先new的后释放，保证不会造成空指针调用。这里解释了子类与父类的构造函数和析构函数调用顺序的问题。</p>
+<p>我们在来看另一个测试。</p>
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Object</span> <span class="o">*</span><span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InheritObject</span><span class="p">();</span>
+    <span class="k">delete</span> <span class="n">obj</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>编译运行，这次的结果为：</p>
+<blockquote>
+  <p>Object() called<br />
+InheritObject() called<br />
+~InheritObject() called<br />
+~Object() called</p>
+</blockquote>
+<p>和上面的输出相同。但是在这次测试中，我们使用父类指针接受了一个子类的对象。那么在delete的时候，我们看到的是父类的指针，怎么才能将子类的内存释放呢？这里就有一个c++的多态机制了，在运行时去决定调用哪个函数，这里就用到了virtual函数的作用了。</p>
+<p>综上所述，析构函数上加<strong>virtual</strong>关键字，是为了保证在多态调用中，不会导致内存泄漏。</p>
+    </div>
+    <aside class="share">
+      <span>Share this: </span>
+      <a href="http://twitter.com/share?text=C++虚析构函数&amp;url=http://www.hdelbert.com/c++/2015/cplusplus-virtual-function/&amp;hashtags=web,dev,blog,soudev&amp;via=nandomoreirame"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <i class="icon icon-twitter-rounded"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.hdelbert.com/c++/2015/cplusplus-virtual-function/"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <i class="icon icon-facebook-rounded"></i>
+      </a>
+    </aside>
+  </div>
+  <hr>
+  <aside id="comments" class="disqus">
+    <div class="container">
+      <h3><i class="icon icon-comments-o"></i> Comments</h3>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'HDelbert';
+        var disqus_identifier = '/c++/2015/cplusplus-virtual-function';
+        var disqus_title = 'C++虚析构函数';
+        var disqus_url = 'http://www.hdelbert.com';
+        /*var disqus_developer = 1;*/
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+      </noscript>
+    </div>
+  </aside>
+</article>
+        </section>
+<div class="clearfix"></div>
+<footer class="site-footer txt-center">
+  <hr>
+  <ul class="social">
+  </ul>
+  <small>&copy; 2016 All rights reserved. Made with <a href="http://jekyllrb.com" target="_blank">Jekyll</a> and <i class="icon icon-heart"></i></small>
+  <small>by <a href="http://hdelbert.com" target="_blank">hdelbert.com</a></small>
+</footer>
+    </main>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jekyll-search.min.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>

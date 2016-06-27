@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="theme-color" content="#2ecc71">
+<meta name="google-site-verification" content="5HhLZhC5gJXf5Wqcqf7T1FRLPqI083fi5WVu5LDWnyw" />
+<meta name="baidu-site-verification" content="an8ny05bku" />
+<title> Markdown语法 | HDelbert</title>
+<meta name="description" content="markdown 语法">
+<meta name="keywords" content="Jekyll, linux, mug, free, download, SEO, blog, web">
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/markdown.css">
+<link rel="stylesheet" href="/css/haroopad.css">
+<link rel="canonical" href="http://www.hdelbert.com/linux/2015/Markdown-syntax/">
+<link rel="alternate" type="application/rss+xml" title="HDelbert" href="http://www.hdelbert.com/feed.xml" />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-71731514-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script>base_url = "";</script>
+  </head>
+  <body class="single">
+    <main class="main-container">
+        <header class="site-header">
+  <div class="container txt-center">
+    <a href="#" class="nav-toogle js-menu-trigger sliding-panel-button">
+      <span></span>
+      <span></span>
+      <span></span>
+    </a>
+    <nav class="js-menu sliding-panel-content">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="http://github.com/HDelbert" target="_blank">Github</a></li>
+        <li><a href="/feed.xml" target="_blank"><i class="icon icon-feed"></i> Feed</a></li>
+      </ul>
+    </nav>
+    <div class="js-menu-screen sliding-panel-fade-screen"></div>
+    <a href="/" class="author-thumb dot">
+      <img src="/images/avatar.jpeg" alt="Author thumbnail" class="dot">
+    </a>
+      <h1 class="post-title">Markdown语法</h1>
+      <p class="post-meta">Dec 10, 2015 • HuMeng</p>
+  </div>
+</header>
+        <section class="main-content">
+          <article class="post">
+  <div class="post-content container">
+    <div class="markdown haroopad">
+      <h1 id="markdown">Markdown语法</h1>
+<p><strong>段落和换行</strong></p>
+<p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行。普通段落不该用空格或制表符来缩进。</p>
+<p>两个以上的空格然后回车，表示换行。</p>
+<p><strong>标题</strong></p>
+<pre><code># 这是H1
+## 这是H2
+###### 这是H6
+</code></pre>
+<p><strong>区块引用</strong></p>
+<pre><code>&gt; This is the first level of quoting.
+&gt;
+&gt; &gt; This is nested blockquote.
+&gt;
+&gt; Back to the first level.
+</code></pre>
+<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等。</p>
+<p><strong>列表</strong></p>
+<ul>
+  <li>
+    <p>无序</p>
+    <pre><code>* Red
+* Green
+* Blue
+</code></pre>
+  </li>
+  <li>
+    <p>有序</p>
+    <pre><code>1. Bird
+2. McHale
+3. Parish
+</code></pre>
+  </li>
+</ul>
+<p>列表项目可以包含多个段落，每个项目下的段落都必须缩进 4 个空格或是 1 个制表符。</p>
+<p><strong>代码区块</strong></p>
+<p>要在 Markdown 中建立代码区块很简单，只要简单地缩进 4 个空格或是 1 个制表符就可以。</p>
+<pre><code>这是一个普通段落：
+    这是一个代码区块。
+</code></pre>
+<p><strong>分隔线</strong></p>
+<p>你可以在一行中用三个以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。</p>
+<pre><code>* * *
+---
+</code></pre>
+<p><strong>链接</strong></p>
+<p>Markdown 支持两种形式的链接语法行内式和参考式两种形式。例如：</p>
+<pre><code>This is [an example](http://example.com/ "Title") inline link.
+[This link](http://example.net/) has no title attribute.
+This is [an example] [id] reference-style link.
+[id]: http://example.com/  "Optional Title Here"
+</code></pre>
+<p><strong>强调</strong></p>
+<p>Markdown 使用星号（*）和底线（_）作为标记强调字词的符号，被 * 或 _ 包围的字词会被转成斜体，用两个 * 或 _ 包起来的话，则会被转成加粗。</p>
+<pre><code>**abc** *dc*
+_abc_ __dc__
+</code></pre>
+<p><strong>代码</strong></p>
+<p>如果要标记一小段行内代码，你可以用反引号把它包起来（`）。
+如果要在代码区段内插入反引号，你可以用多个反引号来开启和结束代码区段。</p>
+<pre><code>This is `code`.
+`` This is `code`. ``
+</code></pre>
+<p><strong>图片</strong></p>
+<p>Markdown 使用一种和链接很相似的语法来标记图片，同样也允许两种样式：行内式和参考式。</p>
+<pre><code>![Alt text](/path/to/img.jpg)
+![Alt text](/path/to/img.jpg "Optional title")
+![Alt text][id]
+[id]: url/to/image  "Optional title attribute"
+</code></pre>
+<p><strong>反斜杠</strong></p>
+<p>Markdown 可以利用反斜杠来插入一些在语法中有其它意义的符号。</p>
+<h2 id="section">扩展</h2>
+<p><strong>表格</strong></p>
+<pre><code>| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+</code></pre>
+    </div>
+    <aside class="share">
+      <span>Share this: </span>
+      <a href="http://twitter.com/share?text=Markdown语法&amp;url=http://www.hdelbert.com/linux/2015/Markdown-syntax/&amp;hashtags=web,dev,blog,soudev&amp;via=nandomoreirame"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <i class="icon icon-twitter-rounded"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.hdelbert.com/linux/2015/Markdown-syntax/"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <i class="icon icon-facebook-rounded"></i>
+      </a>
+    </aside>
+  </div>
+  <hr>
+  <aside id="comments" class="disqus">
+    <div class="container">
+      <h3><i class="icon icon-comments-o"></i> Comments</h3>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'HDelbert';
+        var disqus_identifier = '/linux/2015/Markdown-syntax';
+        var disqus_title = 'Markdown语法';
+        var disqus_url = 'http://www.hdelbert.com';
+        /*var disqus_developer = 1;*/
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+      </noscript>
+    </div>
+  </aside>
+</article>
+        </section>
+<div class="clearfix"></div>
+<footer class="site-footer txt-center">
+  <hr>
+  <ul class="social">
+  </ul>
+  <small>&copy; 2016 All rights reserved. Made with <a href="http://jekyllrb.com" target="_blank">Jekyll</a> and <i class="icon icon-heart"></i></small>
+  <small>by <a href="http://hdelbert.com" target="_blank">hdelbert.com</a></small>
+</footer>
+    </main>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jekyll-search.min.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>

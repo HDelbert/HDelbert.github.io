@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="theme-color" content="#2ecc71">
+<meta name="google-site-verification" content="5HhLZhC5gJXf5Wqcqf7T1FRLPqI083fi5WVu5LDWnyw" />
+<meta name="baidu-site-verification" content="an8ny05bku" />
+<title> awk 使用简介 | HDelbert</title>
+<meta name="description" content="awk-使用简介">
+<meta name="keywords" content="awk, linux, shell">
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/markdown.css">
+<link rel="stylesheet" href="/css/haroopad.css">
+<link rel="canonical" href="http://www.hdelbert.com/awk-disc">
+<link rel="alternate" type="application/rss+xml" title="HDelbert" href="http://www.hdelbert.com/feed.xml" />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-71731514-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script>base_url = "";</script>
+  </head>
+  <body class="single">
+    <main class="main-container">
+        <header class="site-header">
+  <div class="container txt-center">
+    <a href="#" class="nav-toogle js-menu-trigger sliding-panel-button">
+      <span></span>
+      <span></span>
+      <span></span>
+    </a>
+    <nav class="js-menu sliding-panel-content">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="http://github.com/HDelbert" target="_blank">Github</a></li>
+        <li><a href="/feed.xml" target="_blank"><i class="icon icon-feed"></i> Feed</a></li>
+      </ul>
+    </nav>
+    <div class="js-menu-screen sliding-panel-fade-screen"></div>
+    <a href="/" class="author-thumb dot">
+      <img src="/images/avatar.jpeg" alt="Author thumbnail" class="dot">
+    </a>
+      <h1 class="post-title">awk 使用简介</h1>
+      <p class="post-meta">Jun 16, 2016 • HuMeng</p>
+  </div>
+</header>
+        <section class="main-content">
+          <article class="post">
+  <div class="post-content container">
+    <div class="markdown haroopad">
+      <h1 id="awk">AWK快速使用</h1>
+<p>Awk是一个使用很方便的编程语言，特别在文本处理方面。这是一篇简短的使用说明书，由于笔者不是经常使用Awk，而每次要用的时候都会忘掉一些语法和技巧，特此记一篇使用说明。本文大部分内容摘抄自<a href="https://github.com/wuzhouhui/awk">《AWK程序设计语言》</a>第一章。</p>
+<h2 id="section">开始</h2>
+<p>首先假设我们有一个数据文件emp.data，这个文件包含有名字，每小时工资，工作时长，每一行代表一个雇员的纪录，就像这样</p>
+<table>
+  <tbody>
+    <tr>
+      <td>Beth</td>
+      <td>4.00</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Dan</td>
+      <td>3.75</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Kathy</td>
+      <td>4.00</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>Mark</td>
+      <td>5.00</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Mary</td>
+      <td>5.50</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>Susie</td>
+      <td>4.25</td>
+      <td>18</td>
+    </tr>
+  </tbody>
+</table>
+<p>一些变量的含义：</p>
+<ul>
+  <li>$0表示整行数据</li>
+  <li>$1，$2，$3表示第一列，第二列，第三列的数据，依次类推。如第一行数据$1==Beth，$2==4.00</li>
+  <li>NF，字段的数量。如$NF为最后一个字段</li>
+  <li>NR，到目前为止，读取到的行数。</li>
+</ul>
+<p>命令行输入的格式：</p>
+<p><code>
+$ awk 'command' data
+</code></p>
+<p>被运行的程序用<strong>单引号</strong>包围起来，data为输入的数据文件。被单引号包围的部分是一个完整的awk程序。它由一个单独的<strong>模式－动作</strong>语句组成，即<em><code>pattern { action }</code></em>。如<code>awk '$3 &gt; 0 { print $1, $2 * $3 }' emp.data</code>。<code>$3 &gt; 0</code>是模式，动作为<code>{ print $1, $2 * $3 }</code>。</p>
+<h2 id="awk-1">运行AWK程序</h2>
+<p>运行一个awk程序有多种方式</p>
+<ul>
+  <li><code>$ awk 'program' input files</code></li>
+  <li><code>$ awk 'program'</code>接下来一行一行的输入你的数据</li>
+  <li><code>$ awk -f progfile optional list of files</code>-f选项告诉awk从文件中提取程序。</li>
+</ul>
+<h2 id="print-printf">输出 print, printf</h2>
+<p>print可以直接输出数据，字符串等。如 { print NR, $1, $2 * $3, }
+printf可以做格式化输出，printf(<em>format</em>, <em>value1</em>, <em>value2</em>,…,<em>valuen</em>)，format中的格式和c语言类似。</p>
+<h2 id="begin--end">BEGIN 与 END</h2>
+<p>BEGIN在文件的第一行处理之前被匹配（执行），END在文件的最后一行处理之后匹配。</p>
+<h2 id="section-1">流程控制语句</h2>
+<p>支持 If-Else语句，while语句和for语句。它们只能用在action中。格式如下：</p>
+<p>If-Else语句</p>
+<div class="highlight"><pre><code class="language-awk" data-lang="awk"><span class="o">$</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">6</span> <span class="p">{</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">pay</span> <span class="o">=</span> <span class="nx">pay</span> <span class="o">+</span> <span class="o">$</span><span class="mi">2</span> <span class="o">*</span> <span class="o">$</span><span class="mi">3</span> <span class="p">}</span>
+<span class="nx">END</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="kr">print</span> <span class="nx">n</span><span class="p">,</span> <span class="s2">&quot;employees, total pay is&quot;</span><span class="p">,</span> <span class="nx">pay</span><span class="p">,</span>
+                 <span class="s2">&quot;average pay is&quot;</span><span class="p">,</span> <span class="nx">pay</span><span class="o">/</span><span class="nx">n</span>
+      <span class="k">else</span>
+        <span class="kr">print</span> <span class="s2">&quot;no employees are paid more than $6/hour&quot;</span>
+    <span class="p">}</span></code></pre></div>
+<p>While语句</p>
+<div class="highlight"><pre><code class="language-awk" data-lang="awk"><span class="p">{</span>   <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;=</span> <span class="o">$</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">printf</span><span class="p">(</span><span class="s2">&quot;\t%.2f\n&quot;</span><span class="p">,</span> <span class="o">$</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="o">$</span><span class="mi">2</span><span class="p">)</span> <span class="o">^</span> <span class="nx">i</span><span class="p">)</span>
+        <span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>For语句</p>
+<div class="highlight"><pre><code class="language-awk" data-lang="awk"><span class="p">{</span>   <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="o">$</span><span class="mi">3</span><span class="p">;</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="kr">printf</span><span class="p">(</span><span class="s2">&quot;\t%.2f\n&quot;</span><span class="p">,</span> <span class="o">$</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="o">$</span><span class="mi">2</span><span class="p">)</span> <span class="o">^</span> <span class="nx">i</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h2 id="section-2">数组</h2>
+<div class="highlight"><pre><code class="language-awk" data-lang="awk"><span class="p">{</span> <span class="nx">line</span><span class="p">[</span><span class="nb">NR</span><span class="p">]</span> <span class="o">=</span> <span class="o">$</span><span class="mi">0</span> <span class="p">}</span>
+<span class="nx">END</span> <span class="p">{</span> <span class="nx">i</span> <span class="o">=</span> <span class="nb">NR</span>
+      <span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+          <span class="kr">print</span> <span class="nx">line</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+          <span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span>
+      <span class="p">}</span>
+    <span class="p">}</span></code></pre></div>
+<h2 id="section-3">实用“一行”手册</h2>
+<ol>
+  <li>
+    <p>输入行的总数</p>
+    <pre><code>END { print NR }
+</code></pre>
+  </li>
+  <li>
+    <p>打印第10行</p>
+    <pre><code>NR == 10
+</code></pre>
+  </li>
+  <li>
+    <p>打印每一个输入的最后一个字段</p>
+    <pre><code>{ print $NF }
+</code></pre>
+  </li>
+  <li>
+    <p>打印最后一行的最后一个字段</p>
+    <pre><code> { field = $NF }
+ END { print field }
+</code></pre>
+  </li>
+  <li>
+    <p>打印字段数多于4个的输入行</p>
+    <pre><code> NF &gt; 4
+</code></pre>
+  </li>
+  <li>
+    <p>打印最后一个字段值大于4的输入行</p>
+    <pre><code> $NF &gt; 4
+</code></pre>
+  </li>
+  <li>
+    <p>打印所有输入行的字段数的总和</p>
+    <pre><code> { nf = nf + NF }
+ END { print nf }
+</code></pre>
+  </li>
+  <li>
+    <p>打印包含Beth 的行的数量</p>
+    <pre><code> /Beth/ { nlines = nlines + 1 }
+ END { print nlines }
+</code></pre>
+  </li>
+  <li>
+    <p>打印具有最大值的第一个字段, 以及包含它的行(假设$1 总是正的)</p>
+    <pre><code> $1 &gt; max { max = $1; maxline = $0 }
+ END { print max, maxline }
+</code></pre>
+  </li>
+  <li>
+    <p>打印至少包含一个字段的行</p>
+    <pre><code>NF &gt; 0
+</code></pre>
+  </li>
+  <li>
+    <p>打印长度超过80 个字符的行</p>
+    <pre><code>length($0) &gt; 80
+</code></pre>
+  </li>
+  <li>
+    <p>在每一行的前面加上它的字段数</p>
+    <pre><code>{ print NF, $0 }
+</code></pre>
+  </li>
+  <li>
+    <p>打印每一行的第1 与第2 个字段, 但顺序相反</p>
+    <pre><code>{ print $2, $1 }
+</code></pre>
+  </li>
+  <li>
+    <p>交换每一行的第1 与第2 个字段, 并打印该行</p>
+    <pre><code>{ temp = $1; $1 = $2; $2 = temp; print }
+</code></pre>
+  </li>
+  <li>
+    <p>将每一行的第一个字段用行号代替</p>
+    <pre><code>{ $1 = NR; print }
+</code></pre>
+  </li>
+  <li>
+    <p>打印删除了第2 个字段后的行</p>
+    <pre><code>{ $2 = ""; print }
+</code></pre>
+  </li>
+  <li>
+    <p>将每一行的字段按逆序打印</p>
+    <pre><code>{ for (i = NF; i &gt; 0; i = i - 1) printf("%s ", $i)  
+    printf("\n")  
+}
+</code></pre>
+  </li>
+  <li>
+    <p>打印每一行的所有字段值之和</p>
+    <pre><code>{ sum = 0
+    for (i = 1; i &lt;= NF; i = i + 1) sum = sum + $i
+    print sum
+}
+</code></pre>
+  </li>
+  <li>
+    <p>将所有行的所有字段值累加起来</p>
+    <pre><code>{ for (i = 1; i &lt;= NF; i = i + 1) sum = sum + $i }
+END { print sum }
+</code></pre>
+  </li>
+  <li>
+    <p>将每一行的每一个字段用它的绝对值替换</p>
+    <pre><code>{ for (i = 1; i &lt;= NF; i = i + 1) if ($i &lt; 0) $i = -$i
+    print $i
+}
+</code></pre>
+  </li>
+</ol>
+    </div>
+    <aside class="share">
+      <span>Share this: </span>
+      <a href="http://twitter.com/share?text=awk 使用简介&amp;url=http://www.hdelbert.com/awk-disc&amp;hashtags=web,dev,blog,soudev&amp;via=nandomoreirame"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <i class="icon icon-twitter-rounded"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.hdelbert.com/awk-disc"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <i class="icon icon-facebook-rounded"></i>
+      </a>
+    </aside>
+  </div>
+  <hr>
+  <aside id="comments" class="disqus">
+    <div class="container">
+      <h3><i class="icon icon-comments-o"></i> Comments</h3>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'HDelbert';
+        var disqus_identifier = '/awk-disc';
+        var disqus_title = 'awk 使用简介';
+        var disqus_url = 'http://www.hdelbert.com';
+        /*var disqus_developer = 1;*/
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+      </noscript>
+    </div>
+  </aside>
+</article>
+        </section>
+<div class="clearfix"></div>
+<footer class="site-footer txt-center">
+  <hr>
+  <ul class="social">
+  </ul>
+  <small>&copy; 2016 All rights reserved. Made with <a href="http://jekyllrb.com" target="_blank">Jekyll</a> and <i class="icon icon-heart"></i></small>
+  <small>by <a href="http://hdelbert.com" target="_blank">hdelbert.com</a></small>
+</footer>
+    </main>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jekyll-search.min.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>
