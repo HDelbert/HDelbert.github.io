@@ -1,0 +1,44 @@
+# Basic
+title: HDelbert
+subtitle: 我的自留地
+welcome_message: 欢迎来到我的个人主页。
+description: 嗨，我是胡萌 (@HDelbert)，一名计算机图形开发者。现居上海，就职于阿里巴巴。正在修行，探求创意之源。
+creator: <a href="http://github.com/HDelbert">@HDelbert</a>
+
+url: "http://hdelbert.com"
+
+permalink: /:year/:month/:title/
+
+# Format
+highlighter: rouge
+
+# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
+cover_color: slate
+
+blog_button:
+    title: 博客
+    description: 访问博客
+
+nav:
+    - {title: 关于, description: 了解更多关于我, url: 'http://hdelbert.com/about'}
+
+# Pagination
+gems: [jekyll-paginate]
+paginate: 10
+paginate_path: "page/:num/"
+
+# Comment
+comment:
+    disqus: HDelbert
+    # duoshuo:
+# Social
+social:
+    weibo: HDelbert
+    github: HDelbert
+    gplus: 104917038979804187099
+    mail: humeng1220@126.com
+
+# Google Analytics
+ga:
+    id: UA-71731514-1
+    host: hdelbert.com

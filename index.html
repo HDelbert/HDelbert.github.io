@@ -1,187 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="theme-color" content="#2ecc71">
-<meta name="google-site-verification" content="5HhLZhC5gJXf5Wqcqf7T1FRLPqI083fi5WVu5LDWnyw" />
-<meta name="baidu-site-verification" content="an8ny05bku" />
-<title>HDelbert | 我的自留地。</title>
-<meta name="description" content="我的自留地。">
-<meta name="keywords" content="Jekyll, linux, mug, free, download, SEO, blog, web">
-<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
-<link rel="stylesheet" href="/css/main.css">
-<link rel="stylesheet" href="/css/markdown.css">
-<link rel="stylesheet" href="/css/haroopad.css">
-<link rel="canonical" href="http://www.hdelbert.com/">
-<link rel="alternate" type="application/rss+xml" title="HDelbert" href="http://www.hdelbert.com/feed.xml" />
-<script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-71731514-1']);
-_gaq.push(['_trackPageview']);
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-</script>
-<script>base_url = "";</script>
-  </head>
-  <body class="home">
-    <main class="main-container">
-        <header class="site-header">
-  <div class="container txt-center">
-    <a href="#" class="nav-toogle js-menu-trigger sliding-panel-button">
-      <span></span>
-      <span></span>
-      <span></span>
-    </a>
-    <nav class="js-menu sliding-panel-content">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="http://github.com/HDelbert" target="_blank">Github</a></li>
-        <li><a href="/feed.xml" target="_blank"><i class="icon icon-feed"></i> Feed</a></li>
-      </ul>
-    </nav>
-    <div class="js-menu-screen sliding-panel-fade-screen"></div>
-    <a href="/" class="author-thumb dot">
-      <img src="/images/avatar.jpeg" alt="Author thumbnail" class="dot">
-    </a>
-      <h1>Hi, I'm Hu Meng</h1>
-      <div class="search">
-  <i class="icon icon-search"></i>
-  <input type="text" id="search-input" class="input" placeholder="Enter the key for search..">
-  <ul id="results-container" class="dropdown"></ul>
+---
+layout: default
+---
+
+<div class="main-post-list hidden">
+
+  <ol class="post-list">
+    {% for post in paginator.posts %}
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="{{ post.url }}" title="访问 {{ post.title }}">{{ post.title }}</a></h2>
+      <p class="excerpt">{{ post.content | strip_html | strip_newlines | truncate: 250 }}&hellip;</p>
+      <div class="post-list__meta"><time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">{{ post.date | date: "%F"}}</time> &#8226; <span class="post-list__meta--tags tags">{{ post.tags }}</span><a class="btn-border-small" href={{ post.url }}>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    {% endfor %}
+  </ol>
+
+  {% include pagination.html %}
+
 </div>
-  </div>
-</header>
-        <section class="main-content">
-          <section class="posts txt-center container">
-<article class="post">
-    <h1>
-      <a class="post-link" href="/awk-disc" title="Permalink to: awk 使用简介">awk 使用简介</a>
-    </h1>
-    <span class="post-meta">
-      <time class="post-date" datetime="2016-06-16">Jun 16, 2016</time>
-    </span>
-    <p><a href="/awk-disc" title="Permalink to: awk 使用简介" class="read-more">AWK快速使用
-Awk是一个使用很方便的编程语言，特别在文本处理方面。这是一篇简短的使用说明书，由于笔者不是经常使用Awk，而每次要用的时候都会忘掉一些语法和技巧，特此记一篇使用说明。本文大部分内容摘抄自《AWK程序设计语言》第一章。
-开始
-首先假设我们有一个数据文件emp.data，这个文件包含有名字，每小时工资，工作时长，每一行代表一个雇员的纪录，就像这样
-  ...</a></p>
-</article>
-<article class="post">
-    <h1>
-      <a class="post-link" href="/algorithm/2015/functional-programming/" title="Permalink to: 傻瓜函数式编程">傻瓜函数式编程</a>
-    </h1>
-    <span class="post-meta">
-      <time class="post-date" datetime="2015-12-29">Dec 29, 2015</time>
-    </span>
-    <p><a href="/algorithm/2015/functional-programming/" title="Permalink to: 傻瓜函数式编程" class="read-more">傻瓜函数式编程
-2006年6月19日，星期一
-原文地址
-开篇
-我们这些码农做事都是很拖拉的。每天例行报到后，先来点咖啡，看看邮件还有RSS订阅的文章。然后翻翻新闻还有那些技术网站上的更新，再过一遍编程论坛口水区里那些无聊的论战。最后从头把这些再看一次以免错过什么精彩的内容。然后就可以吃午饭了。饭饱过后，回来盯着IDE发一会呆，再看看邮箱，再去搞杯咖啡。光阴似箭，可以回家了……  
-（在...</a></p>
-</article>
-<article class="post">
-    <h1>
-      <a class="post-link" href="/linux/2015/Markdown-syntax/" title="Permalink to: Markdown语法">Markdown语法</a>
-    </h1>
-    <span class="post-meta">
-      <time class="post-date" datetime="2015-12-10">Dec 10, 2015 | linux</time>
-    </span>
-    <p><a href="/linux/2015/Markdown-syntax/" title="Permalink to: Markdown语法" class="read-more">Markdown语法
-段落和换行
-一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行。普通段落不该用空格或制表符来缩进。
-两个以上的空格然后回车，表示换行。
-标题
-# 这是H1
-## 这是H2
-###### 这是H6
-区块引用
-&gt; This is the first level of quoting.
-&gt;
-&gt; &gt; T...</a></p>
-</article>
-<article class="post">
-    <h1>
-      <a class="post-link" href="/linux/2015/Markdown-Sample/" title="Permalink to: Markdown Sample">Markdown Sample</a>
-    </h1>
-    <span class="post-meta">
-      <time class="post-date" datetime="2015-11-18">Nov 18, 2015 | linux</time>
-    </span>
-    <p><a href="/linux/2015/Markdown-Sample/" title="Permalink to: Markdown Sample" class="read-more">Markdown:
-A First Level Header
-A Second Level Header
-Now is the time for all good men to come to
-the aid of their country. This is just a
-regular paragraph.
-The quick brown fox jumped over the ...</a></p>
-</article>
-<article class="post">
-    <h1>
-      <a class="post-link" href="/c++/2015/cplusplus-virtual-function/" title="Permalink to: C++虚析构函数">C++虚析构函数</a>
-    </h1>
-    <span class="post-meta">
-      <time class="post-date" datetime="2015-11-10">Nov 10, 2015 | c++</time>
-    </span>
-    <p><a href="/c++/2015/cplusplus-virtual-function/" title="Permalink to: C++虚析构函数" class="read-more">为什么C++ 的父类的析构函数需要加virtual关键字？
-我们先来看一段实例代码:
-class Object
-{
-public:
-    Object()
-    {
-        cout &lt;&lt; &quot;Object() called&quot; &lt;&lt; endl;
-    }
-    virtual ~Object()
-    {
-        co...</a></p>
-</article>
-<article class="post">
-    <h1>
-      <a class="post-link" href="/linux/2015/vim/" title="Permalink to: Vim简单操作">Vim简单操作</a>
-    </h1>
-    <span class="post-meta">
-      <time class="post-date" datetime="2015-11-09">Nov 9, 2015 | linux</time>
-    </span>
-    <p><a href="/linux/2015/vim/" title="Permalink to: Vim简单操作" class="read-more">打开文件，在终端输入
-  vim filename
-进入到了vim编辑画面后，常用按键作用
-  i 进入输入模式
-  ESC 退出输入模式
-以下按键要在非输入模式下进行，即按ESC之后
-vim中的大部分按键都是在非输入模式下作用的，i也是在非输入模式下才能使用
-基本操作
-  :w 保存文件
-  :q 退出文件
-  :wq 保存并退出文件
-  :q! 退出不保存文件
-  ...</a></p>
-</article>
-  <nav class="pagination" role="pagination">
-  <ul>
-    <li><span class="page-number">Page 1 of 1</span></li>
-  </ul>
-</nav>
-</section>
-        </section>
-<div class="clearfix"></div>
-<footer class="site-footer txt-center">
-  <hr>
-  <ul class="social">
-  </ul>
-  <small>&copy; 2016 All rights reserved. Made with <a href="http://jekyllrb.com" target="_blank">Jekyll</a> and <i class="icon icon-heart"></i></small>
-  <small>by <a href="http://hdelbert.com" target="_blank">hdelbert.com</a></small>
-</footer>
-    </main>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jekyll-search.min.js"></script>
-    <script src="/js/main.js"></script>
-  </body>
-</html>
