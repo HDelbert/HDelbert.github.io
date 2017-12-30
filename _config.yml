@@ -2,7 +2,7 @@
 title: HDelbert
 subtitle: 我的自留地
 welcome_message: 欢迎来到我的个人主页。
-description: 嗨，我是胡萌 (@HDelbert)，一名计算机图形开发者。现居上海，就职于阿里巴巴。正在修行，探求创意之源。
+description: 嗨，我是胡萌 (@HDelbert)，从事于 Computer Vision 开发工作。现居上海，就职于阿里巴巴。正在修行，探求创意之源。
 creator: <a href="http://github.com/HDelbert">@HDelbert</a>
 
 url: "http://hdelbert.com"
@@ -31,6 +31,7 @@ paginate_path: "page/:num/"
 comment:
     disqus: HDelbert
     # duoshuo:
+
 # Social
 social:
     weibo: HDelbert
