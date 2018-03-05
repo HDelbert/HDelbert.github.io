@@ -170,7 +170,7 @@ I start my morning with a cup of coffee and
 <a href="http://www.nytimes.com/">The New York Times</a>.</p>
 {% endhighlight %}
 
-###IMAGES
+### IMAGES
 
 Image syntax is very much like link syntax.
 
