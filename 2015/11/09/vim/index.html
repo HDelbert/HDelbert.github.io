@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="打开文件，在终端输入  vim filename  进入到了vim编辑画面后，常用按键作用  i 进入输入模式 ESC 退出输入模式  以下按键要在非输入模式下进行，即按ESC之后vim中的大部分按键都是在非输入模式下作用的，i也是在非输入模式下才能使用 基本操作 :w 保存文件 :q 退出文件 :wq 保存并退出文件 :q! 退出不保存文件 x 删除光标所在的一个字符 dd  删除当前行，并把删">
+<meta name="keywords" content="vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim简单操作">
+<meta property="og:url" content="http://HDelbert.com/2015/11/09/vim/index.html">
+<meta property="og:site_name" content="一绽香">
+<meta property="og:description" content="打开文件，在终端输入  vim filename  进入到了vim编辑画面后，常用按键作用  i 进入输入模式 ESC 退出输入模式  以下按键要在非输入模式下进行，即按ESC之后vim中的大部分按键都是在非输入模式下作用的，i也是在非输入模式下才能使用 基本操作 :w 保存文件 :q 退出文件 :wq 保存并退出文件 :q! 退出不保存文件 x 删除光标所在的一个字符 dd  删除当前行，并把删">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-07T03:12:43.183Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim简单操作">
+<meta name="twitter:description" content="打开文件，在终端输入  vim filename  进入到了vim编辑画面后，常用按键作用  i 进入输入模式 ESC 退出输入模式  以下按键要在非输入模式下进行，即按ESC之后vim中的大部分按键都是在非输入模式下作用的，i也是在非输入模式下才能使用 基本操作 :w 保存文件 :q 退出文件 :wq 保存并退出文件 :q! 退出不保存文件 x 删除光标所在的一个字符 dd  删除当前行，并把删">
+<link rel="publisher" href="104917038979804180000">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Vim简单操作</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/11/09/cplusplus-virtual-function/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://HDelbert.com/2015/11/09/vim/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://HDelbert.com/2015/11/09/vim/&text=Vim简单操作"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://HDelbert.com/2015/11/09/vim/&is_video=false&description=Vim简单操作"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Vim简单操作&body=Check out this article: http://HDelbert.com/2015/11/09/vim/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://HDelbert.com/2015/11/09/vim/&name=Vim简单操作&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本操作"><span class="toc-number">1.</span> <span class="toc-text">基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高级操作"><span class="toc-number">2.</span> <span class="toc-text">高级操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更高级操作"><span class="toc-number">3.</span> <span class="toc-text">更高级操作</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Vim简单操作
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+        <span itemprop="name">一绽香</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-11-08T23:12:20.000Z" itemprop="datePublished">2015-11-09</time>
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/vim/">vim</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>打开文件，在终端输入</p>
+<blockquote>
+<p>vim filename</p>
+</blockquote>
+<p>进入到了vim编辑画面后，常用按键作用</p>
+<ul>
+<li><strong>i</strong> 进入输入模式</li>
+<li><strong>ESC</strong> 退出输入模式</li>
+</ul>
+<p>以下按键要在非输入模式下进行，即按<strong>ESC</strong>之后<br>vim中的大部分按键都是在非输入模式下作用的，<strong>i</strong>也是在非输入模式下才能使用</p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ul>
+<li><strong>:w</strong> 保存文件</li>
+<li><strong>:q</strong> 退出文件</li>
+<li><strong>:wq</strong> 保存并退出文件</li>
+<li><strong>:q!</strong> 退出不保存文件</li>
+<li><strong>x</strong> 删除光标所在的一个字符</li>
+<li><strong>dd</strong>  删除当前行，并把删除的行存到剪贴板中</li>
+<li><strong>yy</strong> 复制当前行</li>
+<li><strong>p</strong> 粘贴剪贴板中的内容</li>
+</ul>
+<h3 id="高级操作"><a href="#高级操作" class="headerlink" title="高级操作"></a>高级操作</h3><ul>
+<li><strong>/world</strong> 在文件中查找world单词</li>
+<li><strong>:%s/old/new/g</strong> 将文件中的所有old单词替换成new单词</li>
+<li><strong>gg</strong> 跳到文件头</li>
+<li><strong>G</strong> 跳到文件末尾</li>
+<li><strong>u</strong> undo</li>
+<li><strong>&lt;Ctrl-r></strong> redo</li>
+</ul>
+<h3 id="更高级操作"><a href="#更高级操作" class="headerlink" title="更高级操作"></a>更高级操作</h3><ul>
+<li><strong>ndd</strong> 同时删除n行，如<strong>2dd</strong>,同时删除2行</li>
+<li><strong>:n</strong> 光标跳到第n行，如<strong>:10</strong>,光标跳到第10行</li>
+<li><strong>&lt;Ctrl-n></strong>或<strong>&lt;Ctrl-p></strong> 自动补齐功能</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本操作"><span class="toc-number">1.</span> <span class="toc-text">基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高级操作"><span class="toc-number">2.</span> <span class="toc-text">高级操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更高级操作"><span class="toc-number">3.</span> <span class="toc-text">更高级操作</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://HDelbert.com/2015/11/09/vim/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://HDelbert.com/2015/11/09/vim/&text=Vim简单操作"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://HDelbert.com/2015/11/09/vim/&is_video=false&description=Vim简单操作"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Vim简单操作&body=Check out this article: http://HDelbert.com/2015/11/09/vim/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://HDelbert.com/2015/11/09/vim/&title=Vim简单操作"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://HDelbert.com/2015/11/09/vim/&name=Vim简单操作&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 HuMeng
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-71731514-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
