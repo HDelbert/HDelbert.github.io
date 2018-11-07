@@ -1,4 +1,9 @@
-_site
-.sass-cache
-.jekyll-metadata
-build.sh
+.DS_Store
+.idea/
+*.log
+*.iml
+*.swp
+.tern-port
+yarn.lock
+package-lock.json
+node_modules/
