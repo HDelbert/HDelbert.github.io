@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Awk是一个使用很方便的编程语言，特别在文本处理方面。这是一篇简短的使用说明书，由于笔者不是经常使用Awk，而每次要用的时候都会忘掉一些语法和技巧，特此记一篇使用说明。本文大部分内容摘抄自《AWK程序设计语言》第一章。 开始首先假设我们有一个数据文件emp.data，这个文件包含有名字，每小时工资，工作时长，每一行代表一个雇员的纪录，就像这样 | Beth | 4.00 | 0 || Dan |">
+<meta name="keywords" content="awk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="awk 使用简介">
+<meta property="og:url" content="http://HDelbert.com/2016/06/15/awk-disc/index.html">
+<meta property="og:site_name" content="一绽香">
+<meta property="og:description" content="Awk是一个使用很方便的编程语言，特别在文本处理方面。这是一篇简短的使用说明书，由于笔者不是经常使用Awk，而每次要用的时候都会忘掉一些语法和技巧，特此记一篇使用说明。本文大部分内容摘抄自《AWK程序设计语言》第一章。 开始首先假设我们有一个数据文件emp.data，这个文件包含有名字，每小时工资，工作时长，每一行代表一个雇员的纪录，就像这样 | Beth | 4.00 | 0 || Dan |">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-07T03:12:43.179Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="awk 使用简介">
+<meta name="twitter:description" content="Awk是一个使用很方便的编程语言，特别在文本处理方面。这是一篇简短的使用说明书，由于笔者不是经常使用Awk，而每次要用的时候都会忘掉一些语法和技巧，特此记一篇使用说明。本文大部分内容摘抄自《AWK程序设计语言》第一章。 开始首先假设我们有一个数据文件emp.data，这个文件包含有名字，每小时工资，工作时长，每一行代表一个雇员的纪录，就像这样 | Beth | 4.00 | 0 || Dan |">
+<link rel="publisher" href="104917038979804180000">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>awk 使用简介</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/03/05/english-900/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/12/28/functional-programming/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://HDelbert.com/2016/06/15/awk-disc/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://HDelbert.com/2016/06/15/awk-disc/&text=awk 使用简介"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://HDelbert.com/2016/06/15/awk-disc/&is_video=false&description=awk 使用简介"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=awk 使用简介&body=Check out this article: http://HDelbert.com/2016/06/15/awk-disc/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://HDelbert.com/2016/06/15/awk-disc/&name=awk 使用简介&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行AWK程序"><span class="toc-number">2.</span> <span class="toc-text">运行AWK程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出-print-printf"><span class="toc-number">3.</span> <span class="toc-text">输出 print, printf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BEGIN-与-END"><span class="toc-number">4.</span> <span class="toc-text">BEGIN 与 END</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制语句"><span class="toc-number">5.</span> <span class="toc-text">流程控制语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组"><span class="toc-number">6.</span> <span class="toc-text">数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实用“一行”手册"><span class="toc-number">7.</span> <span class="toc-text">实用“一行”手册</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        awk 使用简介
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+        <span itemprop="name">一绽香</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-06-15T04:45:40.000Z" itemprop="datePublished">2016-06-15</time>
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/awk/">awk</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Awk是一个使用很方便的编程语言，特别在文本处理方面。这是一篇简短的使用说明书，由于笔者不是经常使用Awk，而每次要用的时候都会忘掉一些语法和技巧，特此记一篇使用说明。本文大部分内容摘抄自<a href="https://github.com/wuzhouhui/awk" target="_blank" rel="noopener">《AWK程序设计语言》</a>第一章。</p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>首先假设我们有一个数据文件emp.data，这个文件包含有名字，每小时工资，工作时长，每一行代表一个雇员的纪录，就像这样</p>
+<p>| Beth | 4.00 | 0 |<br>| Dan | 3.75 | 0 |<br>| Kathy | 4.00 | 10 |<br>| Mark | 5.00 | 20 |<br>| Mary | 5.50 | 22 |<br>| Susie | 4.25 | 18 |</p>
+<p>一些变量的含义：</p>
+<ul>
+<li>$0表示整行数据</li>
+<li>$1，$2，$3表示第一列，第二列，第三列的数据，依次类推。如第一行数据$1==Beth，$2==4.00</li>
+<li>NF，字段的数量。如$NF为最后一个字段</li>
+<li>NR，到目前为止，读取到的行数。</li>
+</ul>
+<p>命令行输入的格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ awk &apos;command&apos; data</span><br></pre></td></tr></table></figure>
+<p>被运行的程序用<strong>单引号</strong>包围起来，data为输入的数据文件。被单引号包围的部分是一个完整的awk程序。它由一个单独的<strong>模式－动作</strong>语句组成，即<em><code>pattern { action }</code></em>。如<code>awk &#39;$3 &gt; 0 { print $1, $2 * $3 }&#39; emp.data</code>。<code>$3 &gt; 0</code>是模式，动作为<code>{ print $1, $2 * $3 }</code>。</p>
+<h2 id="运行AWK程序"><a href="#运行AWK程序" class="headerlink" title="运行AWK程序"></a>运行AWK程序</h2><p>运行一个awk程序有多种方式</p>
+<ul>
+<li><code>$ awk &#39;program&#39; input files</code></li>
+<li><code>$ awk &#39;program&#39;</code>接下来一行一行的输入你的数据</li>
+<li><code>$ awk -f progfile optional list of files</code>-f选项告诉awk从文件中提取程序。</li>
+</ul>
+<h2 id="输出-print-printf"><a href="#输出-print-printf" class="headerlink" title="输出 print, printf"></a>输出 print, printf</h2><p>print可以直接输出数据，字符串等。如 { print NR, $1, $2 <em> $3, }<br>printf可以做格式化输出，printf(</em>format<em>, </em>value1<em>, </em>value2<em>,…,</em>valuen*)，format中的格式和c语言类似。</p>
+<h2 id="BEGIN-与-END"><a href="#BEGIN-与-END" class="headerlink" title="BEGIN 与 END"></a>BEGIN 与 END</h2><p>BEGIN在文件的第一行处理之前被匹配（执行），END在文件的最后一行处理之后匹配。</p>
+<h2 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h2><p>支持 If-Else语句，while语句和for语句。它们只能用在action中。格式如下：</p>
+<p>If-Else语句<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>2 &gt; 6 &#123; n = n + 1; pay = pay + $2 * $3 &#125;</span><br><span class="line">END &#123; if (n &gt; 0)</span><br><span class="line">        print n, "employees, total pay is", pay,</span><br><span class="line">                 "average pay is", pay/n</span><br><span class="line">      else</span><br><span class="line">        print "no employees are paid more than $6/hour"</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>While语句<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;   i = 1</span><br><span class="line">    while (i &lt;= $3) &#123;</span><br><span class="line">        printf("\t%.2f\n", $1 * (1 + $2) ^ i)</span><br><span class="line">        i = i + 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>For语句<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;   for (i = 1; i &lt;= $3; i = i + 1)</span><br><span class="line">        printf("\t%.2f\n", $1 * (1 + $2) ^ i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123; line[NR] = $0 &#125;</span><br><span class="line">END &#123; i = NR</span><br><span class="line">      while (i &gt; 0) &#123;</span><br><span class="line">          print line[i]</span><br><span class="line">          i = i - 1</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实用“一行”手册"><a href="#实用“一行”手册" class="headerlink" title="实用“一行”手册"></a>实用“一行”手册</h2><ol>
+<li><p>输入行的总数</p>
+<pre><code>END { print NR }
+</code></pre></li>
+<li><p>打印第10行</p>
+<pre><code>NR == 10
+</code></pre></li>
+<li><p>打印每一个输入的最后一个字段</p>
+<pre><code>{ print $NF }
+</code></pre></li>
+<li><p>打印最后一行的最后一个字段</p>
+<pre><code>{ field = $NF }
+END { print field }
+</code></pre></li>
+<li><p>打印字段数多于4个的输入行</p>
+<pre><code>NF &gt; 4
+</code></pre></li>
+<li><p>打印最后一个字段值大于4的输入行</p>
+<pre><code>$NF &gt; 4
+</code></pre></li>
+<li><p>打印所有输入行的字段数的总和</p>
+<pre><code>{ nf = nf + NF }
+END { print nf }
+</code></pre></li>
+<li><p>打印包含Beth 的行的数量</p>
+<pre><code>/Beth/ { nlines = nlines + 1 }
+END { print nlines }
+</code></pre></li>
+<li><p>打印具有最大值的第一个字段, 以及包含它的行(假设$1 总是正的)</p>
+<pre><code>$1 &gt; max { max = $1; maxline = $0 }
+END { print max, maxline }
+</code></pre></li>
+<li><p>打印至少包含一个字段的行</p>
+<pre><code>NF &gt; 0
+</code></pre></li>
+<li><p>打印长度超过80 个字符的行</p>
+<pre><code>length($0) &gt; 80
+</code></pre></li>
+<li><p>在每一行的前面加上它的字段数</p>
+<pre><code>{ print NF, $0 }
+</code></pre></li>
+<li><p>打印每一行的第1 与第2 个字段, 但顺序相反</p>
+<pre><code>{ print $2, $1 }
+</code></pre></li>
+<li><p>交换每一行的第1 与第2 个字段, 并打印该行</p>
+<pre><code>{ temp = $1; $1 = $2; $2 = temp; print }
+</code></pre></li>
+<li><p>将每一行的第一个字段用行号代替</p>
+<pre><code>{ $1 = NR; print }
+</code></pre></li>
+<li><p>打印删除了第2 个字段后的行</p>
+<pre><code>{ $2 = &quot;&quot;; print }
+</code></pre></li>
+<li><p>将每一行的字段按逆序打印</p>
+<pre><code>{ for (i = NF; i &gt; 0; i = i - 1) printf(&quot;%s &quot;, $i)  
+    printf(&quot;\n&quot;)  
+}
+</code></pre></li>
+<li><p>打印每一行的所有字段值之和</p>
+<pre><code>{ sum = 0
+    for (i = 1; i &lt;= NF; i = i + 1) sum = sum + $i
+    print sum
+}
+</code></pre></li>
+<li><p>将所有行的所有字段值累加起来</p>
+<pre><code>{ for (i = 1; i &lt;= NF; i = i + 1) sum = sum + $i }
+END { print sum }
+</code></pre></li>
+<li><p>将每一行的每一个字段用它的绝对值替换</p>
+<pre><code>{ for (i = 1; i &lt;= NF; i = i + 1) if ($i &lt; 0) $i = -$i
+    print $i
+}
+</code></pre></li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行AWK程序"><span class="toc-number">2.</span> <span class="toc-text">运行AWK程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出-print-printf"><span class="toc-number">3.</span> <span class="toc-text">输出 print, printf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BEGIN-与-END"><span class="toc-number">4.</span> <span class="toc-text">BEGIN 与 END</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制语句"><span class="toc-number">5.</span> <span class="toc-text">流程控制语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组"><span class="toc-number">6.</span> <span class="toc-text">数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实用“一行”手册"><span class="toc-number">7.</span> <span class="toc-text">实用“一行”手册</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://HDelbert.com/2016/06/15/awk-disc/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://HDelbert.com/2016/06/15/awk-disc/&text=awk 使用简介"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://HDelbert.com/2016/06/15/awk-disc/&is_video=false&description=awk 使用简介"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=awk 使用简介&body=Check out this article: http://HDelbert.com/2016/06/15/awk-disc/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://HDelbert.com/2016/06/15/awk-disc/&title=awk 使用简介"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://HDelbert.com/2016/06/15/awk-disc/&name=awk 使用简介&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 HuMeng
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-71731514-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

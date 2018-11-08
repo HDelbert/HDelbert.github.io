@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="翻译原文地址 在前面的文章中，我们讨论了如何使用数值积分器来对运动方程积分。积分听起来很复杂，但它只是一种通过称为“增量时间”（或简称为 dt ）的一小段时间向前推进物理模拟的方法。 但是如何选择这个增量时间值呢？这可能看起来像一个微不足道的主题，但实际上有很多不同的方法来做到这一点，每个方法都有自己的优势和弱点 - 所以请继续阅读！ 固定增量时间（Fixed delta time）向前迈出的最简">
+<meta name="keywords" content="game">
+<meta property="og:type" content="article">
+<meta property="og:title" content="修复你的时间步长">
+<meta property="og:url" content="http://HDelbert.com/2018/04/25/fix-your-timestep/index.html">
+<meta property="og:site_name" content="一绽香">
+<meta property="og:description" content="翻译原文地址 在前面的文章中，我们讨论了如何使用数值积分器来对运动方程积分。积分听起来很复杂，但它只是一种通过称为“增量时间”（或简称为 dt ）的一小段时间向前推进物理模拟的方法。 但是如何选择这个增量时间值呢？这可能看起来像一个微不足道的主题，但实际上有很多不同的方法来做到这一点，每个方法都有自己的优势和弱点 - 所以请继续阅读！ 固定增量时间（Fixed delta time）向前迈出的最简">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-07T03:12:43.181Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="修复你的时间步长">
+<meta name="twitter:description" content="翻译原文地址 在前面的文章中，我们讨论了如何使用数值积分器来对运动方程积分。积分听起来很复杂，但它只是一种通过称为“增量时间”（或简称为 dt ）的一小段时间向前推进物理模拟的方法。 但是如何选择这个增量时间值呢？这可能看起来像一个微不足道的主题，但实际上有很多不同的方法来做到这一点，每个方法都有自己的优势和弱点 - 所以请继续阅读！ 固定增量时间（Fixed delta time）向前迈出的最简">
+<link rel="publisher" href="104917038979804180000">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>修复你的时间步长</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2018/03/05/english-900/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://HDelbert.com/2018/04/25/fix-your-timestep/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&text=修复你的时间步长"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&is_video=false&description=修复你的时间步长"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=修复你的时间步长&body=Check out this article: http://HDelbert.com/2018/04/25/fix-your-timestep/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&name=修复你的时间步长&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#固定增量时间（Fixed-delta-time）"><span class="toc-number">1.</span> <span class="toc-text">固定增量时间（Fixed delta time）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可变增量时间（Variable-delta-time）"><span class="toc-number">2.</span> <span class="toc-text">可变增量时间（Variable delta time）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#半固定增量时间（Semi-fixed-timestep）"><span class="toc-number">3.</span> <span class="toc-text">半固定增量时间（Semi-fixed timestep）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Free-the-physics"><span class="toc-number">4.</span> <span class="toc-text">Free the physics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-final-touch"><span class="toc-number">5.</span> <span class="toc-text">The final touch</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        修复你的时间步长
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+        <span itemprop="name">一绽香</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-04-25T05:45:40.000Z" itemprop="datePublished">2018-04-25</time>
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/game/">game</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>翻译<a href="https://gafferongames.com/post/fix_your_timestep/" target="_blank" rel="noopener">原文地址</a></p>
+<p>在<a href="https://gafferongames.com/post/integration_basics/" target="_blank" rel="noopener">前面的文章</a>中，我们讨论了如何使用数值积分器来对运动方程积分。积分听起来很复杂，但它只是一种通过称为“增量时间”（或简称为 dt ）的一小段时间向前推进物理模拟的方法。</p>
+<p>但是如何选择这个增量时间值呢？这可能看起来像一个微不足道的主题，但实际上有很多不同的方法来做到这一点，每个方法都有自己的优势和弱点 - 所以请继续阅读！</p>
+<h3 id="固定增量时间（Fixed-delta-time）"><a href="#固定增量时间（Fixed-delta-time）" class="headerlink" title="固定增量时间（Fixed delta time）"></a>固定增量时间（Fixed delta time）</h3><p>向前迈出的最简单的方法是固定增量时间，如1/60秒：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> t  = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">double</span> dt = <span class="number">1.0</span> / <span class="number">60.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ( !quit )</span><br><span class="line">&#123;</span><br><span class="line">    integrate( state, t, dt );</span><br><span class="line"></span><br><span class="line">    t += dt;</span><br><span class="line"></span><br><span class="line">    render( state );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在许多方面，这个代码是理想的。如果您足够幸运，您的增量时间与显示器刷新率相匹配，并且您可以确保您的更新循环的实际时间少于一帧，那么您已经拥有了更新物理模拟器的完美解决方案，您可以停止阅读本文。</p>
+<p>但在现实世界中，您可能不会提前知道显示器的刷新率。VSYNC 可以被关闭，或者你可能在一台速度很慢的电脑上运行，这台电脑无法以 60fps 的速度更新并且渲染。</p>
+<p>在这些情况下，您的模拟器运行速度会比您想要的更快或更慢。</p>
+<h3 id="可变增量时间（Variable-delta-time）"><a href="#可变增量时间（Variable-delta-time）" class="headerlink" title="可变增量时间（Variable delta time）"></a>可变增量时间（Variable delta time）</h3><p>解决这个问题 <em>似乎</em> 很简单。只需测量前一帧所需时间，然后将该值作为下一帧的增量时间反馈回来。这当然是有道理的，因为如果电脑速度太慢而无法在 60HZ 下更新并且必须降低到 30fps，那么您将自动以 1/30 的时间传递。同样的，显示器刷新率为 75HZ 而不是 60HZ 时，甚至在快速计算机上关闭 VSYNC 的情况下也是如此：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> t           = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">double</span> currentTime = hires_time_in_seconds();</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ( !quit )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">double</span> newTime   = hires_time_in_seconds();</span><br><span class="line">    <span class="keyword">double</span> frameTime = newTime - currentTime;</span><br><span class="line">    currentTime      = newTime;</span><br><span class="line"></span><br><span class="line">    integrate( state, t, frameTime );</span><br><span class="line"></span><br><span class="line">    t += frameTime;</span><br><span class="line"></span><br><span class="line">    render( state );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是现在我将解释一下这个方法存在的一个巨大问题。问题在于你物理模拟器的行为取决于你传入的增量时间。这个效果可能很微小，因为你的游戏根据帧率有一个稍微不同的“感觉”，或者它可能和你的弹簧模拟爆炸到无穷大一样极端，快速移动的物体穿过墙壁和穿过地板的玩家！</p>
+<p>但有一点是肯定的，那就是期望你的模拟器能够正确处理传递给它的任何增量时间，是完全不切实际的。要理解为什么，考虑，如果你用 1/10 秒作为增量时间会发生什么？10 秒？100 秒？最终你会发现一个突破点。</p>
+<h3 id="半固定增量时间（Semi-fixed-timestep）"><a href="#半固定增量时间（Semi-fixed-timestep）" class="headerlink" title="半固定增量时间（Semi-fixed timestep）"></a>半固定增量时间（Semi-fixed timestep）</h3><p>更确实的说，只有当增量时间小于或等于某个最大值时，您的模拟器才能正常运行。在实践中，这通常比试图在广泛的增量时间值上进行仿真更加容易。</p>
+<p>有了这些知识，下面是一个简单的技巧，可以确保您不会在大于最大值的增量时间内传递数据，同时仍能在不同的机器上以正确的速度运行：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> t  = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">double</span> dt = <span class="number">1</span> / <span class="number">60.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> currentTime = hires_time_in_seconds();</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ( !quit )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">double</span> newTime   = hires_time_in_seconds();</span><br><span class="line">    <span class="keyword">double</span> frameTime = newTime - currentTime;</span><br><span class="line">    currentTime      = newTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ( frameTime &gt; <span class="number">0.0</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">float</span> deltaTime = min( frameTime, dt );</span><br><span class="line"></span><br><span class="line">        integrate( state, t, deltaTime );</span><br><span class="line"></span><br><span class="line">        frameTime -= deltaTime;</span><br><span class="line">        t         += deltaTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render( state );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法的好处是我们现在有一个增量时间的上限。如果它是我们细分时间步长，它将永远不会大于这个最大值。缺点是我们现在每次显示更新需要多个步骤，包括一个额外的步骤来消耗 dt 不能被 div 整除的剩余帧时间。如果渲染绑定，这不成问题，但如果仿真是框架中最昂贵的部分，则可能会遇到所谓的“死亡螺旋”。</p>
+<p>什么是死亡螺旋？当你的物理模拟无法跟上要求采取的步骤时，会发生什么情况。例如，如果你的仿真被告知：“好的，请模拟 X 秒的物理学价值”，如果 Y&gt; X 时需要Y秒的实时时间，那么爱因斯坦不会意识到随着时间的推移，你的仿真会落后。这就是所谓的死亡螺旋，因为落后导致你的更新需要模拟更多的步骤才能赶上，这会导致你落后，导致你模拟更多的步骤……</p>
+<p>那么我们如何避免这种情况呢？为了确保稳定的更新，我建议留下一些空间。您确实需要确保实时更新X秒的物理模拟所需的时间 <em>显著</em> 少于X秒。如果你可以做到这一点，那么你的物理引擎可以通过模拟更多帧来“赶上”任何临时峰值。或者，您可以在每帧最大步数处进行钳位，并且在重负载下模拟似乎会减慢。可以说这比螺旋式死亡要好，尤其是如果重负荷只是暂时的高峰。</p>
+<h3 id="Free-the-physics"><a href="#Free-the-physics" class="headerlink" title="Free the physics"></a>Free the physics</h3><p>现在让我们再进一步。在给定相同输入的情况下，如果您想从一次运行到下一次运行需要准确的重现性，该怎么办？这在尝试使用确定性固定步长时，联网物理模拟非常方便，但通常也是一件很好的事情，要知道从一次运行到下一次运行，您的模拟行为完全一样，而根据渲染帧率不同，不会有任何不同行为的可能性。</p>
+<p>但是你问为什么需要完全固定的增量时间来做到这一点？当然，小余数阶段的半固定增量时间“足够好”？是的，你是对的。在大多数情况下它已经足够好了，但由于浮点运算的精度有限，它不完全相同。</p>
+<p>我们现在想要的是两全其美：模拟的固定增量时间值以及以不同帧速率渲染的能力。这两件事似乎完全不一致，它们是 - 除非我们能找到一种方法来解耦模拟和渲染帧率。</p>
+<p>以下是如何做到这一点。在固定dt时间步骤中提前进行物理仿真，同时确保它跟上来自渲染器的定时器值，以便仿真以正确的速率前进。例如，如果显示帧率为50fps，模拟运行速度为100fps，那么我们需要在每次显示更新时采取两个物理步骤。简单吧。</p>
+<p>如果显示帧率是200fps呢？那么在这种情况下，我们需要在每次显示更新时采取一半的物理步骤，但是我们不能这样做，我们必须用固定dt来提前。所以我们每两次更新显示一个物理步骤。</p>
+<p>更棘手的是，如果显示帧率是60fps，但我们希望我们的模拟以100fps运行？没有简单的倍数。没有简单的倍数。如果VSYNC被禁用并且显示帧速率在帧之间波动，该怎么办？</p>
+<p>如果你头脑发生爆炸，不用担心，解决这个问题所需的一切就是改变你的观点。与其认为自己具有一定的帧时间，则必须在渲染之前进行模拟，颠倒视角并认为它是这样的：渲染器产生时间，并且仿真在离散的dt步骤中消耗它。</p>
+<p>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span>       t = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> dt = <span class="number">0.01</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> currentTime = hires_time_in_seconds();</span><br><span class="line"><span class="keyword">double</span> accumulator = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ( !quit )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">double</span> newTime   = hires_time_in_seconds();</span><br><span class="line">    <span class="keyword">double</span> frameTime = newTime - currentTime;</span><br><span class="line">    currentTime      = newTime;</span><br><span class="line"></span><br><span class="line">    accumulator += frameTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ( accumulator &gt;= dt )</span><br><span class="line">    &#123;</span><br><span class="line">        integrate( state, t, dt );</span><br><span class="line">        accumulator -= dt;</span><br><span class="line">        t += dt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render( state );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，与半固定时间步不同的是，我们只能将步长与dt集成在一起，因此在通常情况下，我们在每个帧的末尾都剩下一些未模拟的时间。随着时间的推移，它通过累加器变量传递到下一帧，不会被丢弃。</p>
+<h3 id="The-final-touch"><a href="#The-final-touch" class="headerlink" title="The final touch"></a>The final touch</h3><p>但是剩下的时间呢？这似乎不正确，不是吗？</p>
+<p>要了解正在发生的事情，请考虑显示帧率为60fps并且物理运行速度为50fps的情况。没有很好的倍数，所以累加器会导致模拟之间交替进行，大多数情况下，当剩余部分“积累”到 dt 之上时，每帧只需要一个和偶尔两个物理步骤。</p>
+<p>现在考虑大多数渲染帧会在累加器中剩余一些剩余帧时间，因为它小于dt，所以无法模拟。这意味着我们在与渲染时间略有不同的时间显示物理模拟的状态，导致屏幕上物理模拟的微妙但在视觉上令人不愉快的口吃。</p>
+<p>解决这个问题的一个方法是基于累加器剩余的时间在先前和当前的物理状态之间进行插值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> t  = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">double</span> dt = <span class="number">0.01</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> currentTime = hires_time_in_seconds();</span><br><span class="line"><span class="keyword">double</span> accumulator = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">State previous;</span><br><span class="line">State current;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ( !quit )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">double</span> newTime   = time();</span><br><span class="line">    <span class="keyword">double</span> frameTime = newTime - currentTime;</span><br><span class="line">    <span class="keyword">if</span> ( frameTime &gt; <span class="number">0.25</span> )</span><br><span class="line">        frameTime = <span class="number">0.25</span>;</span><br><span class="line">    currentTime = newTime;</span><br><span class="line"></span><br><span class="line">    accumulator += frameTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ( accumulator &gt;= dt )</span><br><span class="line">    &#123;</span><br><span class="line">        previousState = currentState;</span><br><span class="line">        integrate( currentState, t, dt );</span><br><span class="line">        t += dt;</span><br><span class="line">        accumulator -= dt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> alpha = accumulator / dt;</span><br><span class="line"></span><br><span class="line">    State state = currentState * alpha + previousState * ( <span class="number">1.0</span> - alpha );</span><br><span class="line"></span><br><span class="line">    render( state );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这看起来很复杂，但这是一个简单的思考方式。累加器中的任何余数实际上是在另一个整个物理步骤可以进行之前需要多少时间的度量。例如，dt / 2的其余部分意味着我们正处于当前物理步骤和下一步物理步骤之间的一半。dt * 0.1的其余部分意味着更新是当前状态和下一状态之间的十分之一。</p>
+<p>我们可以使用这个余数值来简单地通过除以dt来获得之前和当前物理状态之间的混合因子。这给出了一个在[0,1]范围内的alpha值，用于在两个物理状态之间执行线性插值以获取当前状态。这种插值对于单值和矢量状态值很容易实现。如果将方向作为四元数存储并使用球面线性插值（slerp）在前一个方向和当前方向之间进行混合，则甚至可以将其用于完整的3D刚体动力学。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#固定增量时间（Fixed-delta-time）"><span class="toc-number">1.</span> <span class="toc-text">固定增量时间（Fixed delta time）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可变增量时间（Variable-delta-time）"><span class="toc-number">2.</span> <span class="toc-text">可变增量时间（Variable delta time）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#半固定增量时间（Semi-fixed-timestep）"><span class="toc-number">3.</span> <span class="toc-text">半固定增量时间（Semi-fixed timestep）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Free-the-physics"><span class="toc-number">4.</span> <span class="toc-text">Free the physics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-final-touch"><span class="toc-number">5.</span> <span class="toc-text">The final touch</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://HDelbert.com/2018/04/25/fix-your-timestep/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&text=修复你的时间步长"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&is_video=false&description=修复你的时间步长"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=修复你的时间步长&body=Check out this article: http://HDelbert.com/2018/04/25/fix-your-timestep/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&title=修复你的时间步长"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://HDelbert.com/2018/04/25/fix-your-timestep/&name=修复你的时间步长&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 HuMeng
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-71731514-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
